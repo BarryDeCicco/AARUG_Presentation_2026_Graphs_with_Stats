@@ -1,0 +1,238 @@
+---
+title: "Advanced Graphs"
+author: "Barry DeCicco"
+date: "2025-09-11"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Contents
+
+
+This presentation covers various useful plot tips I've picked up from various sources.   It's intended to make your life a bit simpler. My sources are the R Graph Gallery, LinkedIn posts and the Medium website.
+
+
+## R Graph Gallery
+
+This is a great resource (https://r-graph-gallery.com) which contains illustrations and code chunks for a large variety of plots, and variations within plot types.  It is the first place to check.
+
+
+## The SanKey Diagram
+
+The SanKey diagram is used to illustrate the low of quantities from earlier sources to later (or intermediate) destinations.
+
+Sankey diagrams are named after Irish Captain Matthew Henry Phineas Riall Sankey, who used this type of diagram in 1898 in a classic figure showing the energy efficiency of a steam engine. The original charts in black and white displayed just one type of flow (e.g. steam); using colors for different types of flows lets the diagram express additional variables. (See: https://en.wikipedia.org/wiki/Sankey_diagram#cite_note-3)
+
+You will need the package 'networkD3'.
+
+Data sources:
+
+- Connection data frame, which has three lists - sources, destinations and values
+
+- Incidence matrix, which is a square matrix, which must be converted into a connection data frame first.
+
+```{r SanKey}
+
+# from:  https://r-graph-gallery.com/sankey-diagram.html
+
+# Library - must have the pagkage networkD3
+library(networkD3)
+library(dplyr)
+ 
+# A connection data frame is a list of flows with intensity for each flow
+links <- data.frame(
+  source=c("group_A","group_A", "group_B", "group_C", "group_C", "group_E"), 
+  target=c("group_C","group_D", "group_E", "group_F", "group_G", "group_H"), 
+  value=c(2,3, 2, 3, 1, 3)
+  )
+ 
+# From these flows we need to create a node data frame: it lists every entities involved in the flow
+nodes <- data.frame(
+  name=c(as.character(links$source), 
+  as.character(links$target)) %>% unique()
+)
+ 
+# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
+links$IDsource <- match(links$source, nodes$name)-1 
+links$IDtarget <- match(links$target, nodes$name)-1
+ 
+# Make the Network
+p <- sankeyNetwork(Links = links, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = "value", NodeID = "name", 
+              sinksRight=FALSE)
+p
+
+# save the widget
+# library(htmlwidgets)
+# saveWidget(p, file=paste0( getwd(), "/HtmlWidget/sankeyBasic1.html"))
+
+
+
+
+```
+
+### Variations
+
+There are two variations:
+- A bump chart, to illustrate changes in ranks rather than values.
+- An Alluvial chart, which is used for freqcencies rather than values.
+
+### Bump Plot with highlighting.
+
+Here's an example from the R Graph Gallery for a bump chart which highlights ranks.
+
+The dataset is retrieved from the rdbnomics package and is from the AMECO database.
+
+It contains the share of gross fixed capital formation (GFCF) in % of GDP for a selection of European countries. The data is available for the years 2000, 2010 and 2020.
+
+This pre-processing step is necessary to rank the countries according to their share of GFCF in % of GDP. The rank() function is used to create a ranking variable for each year.
+
+The countrycode() function is used to convert the ISO3 country codes to country names in German.
+
+```{r bump_plot_data_prep}
+
+# Library
+library(tidyverse)
+library(countrycode)
+library(rdbnomics)
+library(ggbump)
+library(MetBrewer)
+library(scales)
+
+
+
+allcty <- codelist |> filter(!is.na(eu28)) |> pull(iso3c) |> tolower()
+
+gfcf_private <- rdb(provider_code = "AMECO", dataset_code = "UIGP", 
+             dimensions = list(geo = allcty, unit = "mrd-ecu-eur"))
+gdp <- rdb(provider_code = "AMECO", dataset_code = "UVGD",
+           dimensions = list(geo = allcty, unit = "mrd-ecu-eur"))
+
+data <- bind_rows(gfcf_private, gdp) |> 
+  mutate(variable = case_when(
+    str_detect(dataset_name, "private") ~ "GFCF_p",
+    TRUE ~ "GDP")) |> 
+  select(geo, variable, period, value) |> 
+  pivot_wider(names_from = variable, values_from = value) |> 
+  mutate(share_p = GFCF_p/GDP*100, year = year(period), geo = toupper(geo))
+
+ranked <- data |> 
+  filter(year %in% c(2000, 2010, 2020)) |> 
+  mutate(ranking = rank(desc(share_p), ties.method = "first"), .by = year) |> 
+  mutate(ctry = countrycode(geo, "iso3c", "country.name.de"),
+         ctry = ifelse(geo == "CZE", "Tschechien", ctry))
+
+selected <- c("AUT", "DEU", "IRL", "FRA")
+
+head(ranked, n=10)
+
+```
+
+
+```{r make_bump_plot}
+
+ranked |>
+  ggplot(aes(x = year, y = ranking, group = geo)) +
+  geom_bump(linewidth = 0.6, color = "gray90", smooth = 6) +
+  geom_bump(aes(color = geo), linewidth = 0.8, smooth = 6,
+                    data = ~. |> filter(geo %in% selected)) +
+  geom_point(color = "white", size = 4) +
+  geom_point(color = "gray90", size = 2) +
+  geom_point(aes(color = geo), size = 2, 
+             data = ~. |> filter(geo %in% selected)) +
+  geom_text(aes(label = ctry), x = 2021, hjust = 0,
+            color = "gray50", family = "Roboto Condensed", size = 3.5,
+            data = ranked |> slice_max(year, by = geo) |> 
+              filter(!geo %in% selected)) +
+  geom_text(aes(label = ctry), x = 2021, hjust = 0,
+            color = "black", family = "Roboto Condensed", size = 3.5,
+            data = ranked |> slice_max(year, by = geo) |> 
+              filter(geo %in% selected)) +
+  scale_color_manual(values = met.brewer("Juarez")) +
+  scale_x_continuous(limits = c(1999.8, 2027), expand = c(0.01,0),
+                     breaks = c(2000, 2010, 2020)) +
+  scale_y_reverse(breaks = c(25,20,15,10,5,1), expand = c(0.02,0),
+                  labels = number_format(suffix = "."))
+
+
+
+```
+
+
+## ggstream - another 'over time' chart - 
+
+
+This creates what the package author called 'streamographs', another way of showing change over time. It requires the package 'ggstream'.
+
+It has options for producing symmetric plots, stacked plots, and proportional plots (everything adds up to 100%).
+
+#### Basic
+
+``` {r streamograph}
+# install.packages("ggstream")
+library(ggstream)
+library(ggplot2)
+
+head(blockbusters, n=20)
+
+
+
+ggplot(blockbusters, aes(year, box_office, fill = genre)) +
+  geom_stream() +
+  geom_stream_label(aes(label = genre)) +
+  ggtitle("Stream Plot", subtitle = "Default")
+
+
+
+```
+
+``` {r streamograph_ridge}
+#
+install.packages("ggstream")
+library(ggstream)
+# install.packages("ggplot2")
+library(ggplot2)
+
+ggplot(blockbusters, aes(x = year, y = box_office, fill = genre)) +
+  geom_stream(type = "ridge") +
+  ggtitle("Stream Plot", subtitle = "Ridge Plot")
+
+
+
+```
+
+## Other Links:
+
+- ggside (https://cran.r-project.org/web/packages/ggside/vignettes/ggside_basic_usage.html)- allows the addition of side plots to ggplot graphs.
+- ggrepl (https://ggrepel.slowkow.com/) spaces labels to avoid overlap.
+- add_test_pvalue (example at add_test_pvalue) - adds stastistical tests and results.
+-  ggscatterstats/ggstatsplot (https://github.com/IndrajeetPatil/ggstatsplot) - adds marginal plots to plots.
+- ggbetweenstats (https://github.com/IndrajeetPatil/ggstatsplot) - displays differences between groups.
+- ggalign (https://github.com/Yunuuuu/ggalign) lines up results in tabular form.
+- ggridges (https://statisticsglobe.com/ridgeline-plots-in-r) creates ridge plots, showing distribution over categories. 
+
+
+
+## References:
+
+- The R Graph Gallery (https://r-graph-gallery.com)
+  - The SanKey diagram (https://r-graph-gallery.com/sankey-diagram.html)
+- R-Charts (r-charts.com)
+  - Stream plots in ggplot2 with geom_stream (Stream plots in ggplot2 with geom_stream)
+- Wikipedia (https://en.wikipedia.org/wiki/Main_Page)
+  - The SanKey diagram (https://en.wikipedia.org/wiki/Sankey_diagram)
+- Bump plot with highlighting (https://r-graph-gallery.com/web-bump-plot-with-highlights.html)
+- ggstream
+  - Stream plots in ggplot2 with geom_stream (Stream plots in ggplot2 with geom_stream)
+  - Github (https://github.com/davidsjoberg/ggstream)
+  - LinkedIn post (https://www.linkedin.com/posts/statisticsglobe_tidyverse-visualanalytics-datascience-activity-7368189211981553664-Yv2J/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAEzU6MB0kVHCNuKg0uQsqI8A-QHPl2UNwQ)
+  
+  
+
