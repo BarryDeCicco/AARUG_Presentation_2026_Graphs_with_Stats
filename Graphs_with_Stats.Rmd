@@ -68,6 +68,33 @@ ggstatsplot::ggscatterstats(data = mtcars, x = hp, y = mpg, title = 'ggscatterst
 
 ```
 
+
+#### Example: (ggwithinstats)
+
+This looks at the data grouped by a single categorical variable.
+
+**This example shows the integration of a ggstatsplot with other ggplot functions**
+
+``` {r  ggwithinstats}
+
+ggwithinstats(
+  data = bugs_long,
+  x = condition,
+  y = desire,
+  type = "nonparametric", ## type of statistical test
+  xlab = "Condition", ## label for the x-axis
+  ylab = "Desire to kill an artrhopod", ## label for the y-axis
+  package = "yarrr", ## package from which color palette is to be taken
+  palette = "info2", ## choosing a different color palette
+  title = "ggwithinstats: Comparison of desire to kill bugs",
+  caption = "Source: Ryan et al., 2013"
+) + ## modifying the plot further
+  ggplot2::scale_y_continuous(
+    limits = c(0, 10),
+    breaks = seq(from = 0, to = 10, by = 1)
+  )
+```
+
 ### Other ggstatsplot functions:
 
 - ggbetweenstats, for comparisons between groups.
