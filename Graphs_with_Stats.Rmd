@@ -47,7 +47,7 @@ ggstatsplot::ggbetweenstats(data = mtcars, x = am, y = mpg, type = "p")
 ## References and Links:
 
 - ggside (https://cran.r-project.org/web/packages/ggpubr/index.html)
-- ggstatsplot (https://ggrepel.slowkow.com/)
+- ggstatsplot (https://r-graph-gallery.com/package/ggstatsplot.html)
 
 - R Graph Gallery (https://r-graph-gallery.com/) 
 
