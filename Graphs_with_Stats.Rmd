@@ -30,8 +30,12 @@ This is a great resource (https://r-graph-gallery.com) which contains illustrati
 
 ## Quick Start
 
+``` {r  quick_start}
 
+library(ggstatsplot)
+ggstatsplot::ggbetweenstats(data = mtcars, x = am, y = mpg, type = "p")
 
+```
 
 ### Variations
 
