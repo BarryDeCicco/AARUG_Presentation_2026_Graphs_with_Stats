@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 options(repos = c(CRAN = "https://cloud.r-project.org"))
 ```
 
-## Contents
+## Contents and Sources
 
 
 This presentation covers some ways to run statistical test and to attached the output to graphs.   This replaces having to run the tests separately and to process the output until it is suitable for use.
@@ -24,12 +24,12 @@ My sources are the R Graph Gallery, LinkedIn posts and the Medium website.
 - The package '**ggstatsplot**' (https://indrajeetpatil.github.io/ggstatsplot/, https://r-graph-gallery.com/package/ggstatsplot.html) 
 
 
-## R Graph Gallery
+### R Graph Gallery
 
 This is a great resource (https://r-graph-gallery.com) which contains illustrations and code chunks for a large variety of plots, and variations within plot types.  It is the first place to check.
 
 
-## Quick Start
+### Quick Start
 
 You must have ggplot2 installed, then run the command:
 
