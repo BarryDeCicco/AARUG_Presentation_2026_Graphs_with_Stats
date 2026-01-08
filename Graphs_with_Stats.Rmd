@@ -1,7 +1,7 @@
 ---
-title: "Advanced Graphs"
+title: "Graphs with Statistical Tests Attached"
 author: "Barry DeCicco"
-date: "2025-09-11"
+date: "2026-01-08"
 output:
   html_document:
     toc: true
@@ -15,7 +15,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Contents
 
 
-This presentation covers various useful plot tips I've picked up from various sources.   It's intended to make your life a bit simpler. My sources are the R Graph Gallery, LinkedIn posts and the Medium website.
+This presentation covers some ways to run statistical test and to attached the output to graphs.   This replaces having to run the tests separately and to process the output until it is suitable for use.
+
+My sources are the R Graph Gallery, LinkedIn posts and the Medium website.
 
 
 ## R Graph Gallery
