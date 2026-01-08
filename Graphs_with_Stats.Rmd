@@ -115,9 +115,20 @@ ggwithinstats(
 - ggstatsplot:
   -  https://r-graph-gallery.com/package/ggstatsplot.html
   -  https://indrajeetpatil.github.io/ggstatsplot/
-- ggside:  https://cran.r-project.org/web/packages/ggpubr/index.html
 - R Graph Gallery:  https://r-graph-gallery.com/)
 
 
+
+## What's Next?
+
+I would like to explore AI *for* R/Rstudio and *within* R/Rstudio/Positron (more of these integrated AI applications.
+
+My current plan is to present on AI *for* R/Rstudio in February, and
+Integrated AI *within* R/Rstudio/Positron in March.
+
+
+
+ 
+ 
  
 
