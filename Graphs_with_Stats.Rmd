@@ -44,31 +44,12 @@ ggstatsplot::ggbetweenstats(data = mtcars, x = am, y = mpg, type = "p")
 
 
 
-## Other Links:
+## References and Links:
 
-- ggside (https://cran.r-project.org/web/packages/ggside/vignettes/ggside_basic_usage.html)- allows the addition of side plots to ggplot graphs.
-- ggrepl (https://ggrepel.slowkow.com/) spaces labels to avoid overlap.
-- add_test_pvalue (example at add_test_pvalue) - adds stastistical tests and results.
--  ggscatterstats/ggstatsplot (https://github.com/IndrajeetPatil/ggstatsplot) - adds marginal plots to plots.
-- ggbetweenstats (https://github.com/IndrajeetPatil/ggstatsplot) - displays differences between groups.
-- ggalign (https://github.com/Yunuuuu/ggalign) lines up results in tabular form.
-- ggridges (https://statisticsglobe.com/ridgeline-plots-in-r) creates ridge plots, showing distribution over categories. 
+- ggside (https://cran.r-project.org/web/packages/ggpubr/index.html)
+- ggstatsplot (https://ggrepel.slowkow.com/)
 
+- R Graph Gallery (https://r-graph-gallery.com/) 
 
-
-## References:
-
-- The R Graph Gallery (https://r-graph-gallery.com)
-  - The SanKey diagram (https://r-graph-gallery.com/sankey-diagram.html)
-- R-Charts (r-charts.com)
-  - Stream plots in ggplot2 with geom_stream (Stream plots in ggplot2 with geom_stream)
-- Wikipedia (https://en.wikipedia.org/wiki/Main_Page)
-  - The SanKey diagram (https://en.wikipedia.org/wiki/Sankey_diagram)
-- Bump plot with highlighting (https://r-graph-gallery.com/web-bump-plot-with-highlights.html)
-- ggstream
-  - Stream plots in ggplot2 with geom_stream (Stream plots in ggplot2 with geom_stream)
-  - Github (https://github.com/davidsjoberg/ggstream)
-  - LinkedIn post (https://www.linkedin.com/posts/statisticsglobe_tidyverse-visualanalytics-datascience-activity-7368189211981553664-Yv2J/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAEzU6MB0kVHCNuKg0uQsqI8A-QHPl2UNwQ)
-  
   
 
