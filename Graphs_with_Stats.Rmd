@@ -19,6 +19,9 @@ This presentation covers some ways to run statistical test and to attached the o
 
 My sources are the R Graph Gallery, LinkedIn posts and the Medium website.
 
+- The package '**ggpubr**' (https://rpkgs.datanovia.com/ggpubr/)
+- The package '**ggstatplot**' (https://indrajeetpatil.github.io/ggstatsplot/) 
+
 
 ## R Graph Gallery
 
