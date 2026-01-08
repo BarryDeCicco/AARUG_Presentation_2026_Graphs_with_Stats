@@ -73,9 +73,12 @@ ggstatsplot::ggscatterstats(data = mtcars, x = hp, y = mpg, title = 'ggscatterst
 
 ## References and Links:
 
-- ggside (https://cran.r-project.org/web/packages/ggpubr/index.html)
-- ggstatsplot (https://r-graph-gallery.com/package/ggstatsplot.html)
-- R Graph Gallery (https://r-graph-gallery.com/) 
+- ggstatsplot:
+  -  https://r-graph-gallery.com/package/ggstatsplot.html
+  -  https://indrajeetpatil.github.io/ggstatsplot/
+- ggside:  https://cran.r-project.org/web/packages/ggpubr/index.html
+- R Graph Gallery:  https://r-graph-gallery.com/)
 
-  
+
+ 
 
