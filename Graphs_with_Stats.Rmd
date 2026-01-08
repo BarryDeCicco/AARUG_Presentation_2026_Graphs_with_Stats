@@ -10,6 +10,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cloud.r-project.org"))
 ```
 
 ## Contents
@@ -42,6 +43,7 @@ library(ggstatsplot)
 
 
 ``` {r  quick_start}
+
 
 library(ggstatsplot)
 ggstatsplot::ggbetweenstats(data = mtcars, x = am, y = mpg, type = "p")
