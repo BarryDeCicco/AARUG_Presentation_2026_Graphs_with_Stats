@@ -28,60 +28,10 @@ My sources are the R Graph Gallery, LinkedIn posts and the Medium website.
 This is a great resource (https://r-graph-gallery.com) which contains illustrations and code chunks for a large variety of plots, and variations within plot types.  It is the first place to check.
 
 
-## The SanKey Diagram
-
-The SanKey diagram is used to illustrate the low of quantities from earlier sources to later (or intermediate) destinations.
-
-Sankey diagrams are named after Irish Captain Matthew Henry Phineas Riall Sankey, who used this type of diagram in 1898 in a classic figure showing the energy efficiency of a steam engine. The original charts in black and white displayed just one type of flow (e.g. steam); using colors for different types of flows lets the diagram express additional variables. (See: https://en.wikipedia.org/wiki/Sankey_diagram#cite_note-3)
-
-You will need the package 'networkD3'.
-
-Data sources:
-
-- Connection data frame, which has three lists - sources, destinations and values
-
-- Incidence matrix, which is a square matrix, which must be converted into a connection data frame first.
-
-```{r SanKey}
-
-# from:  https://r-graph-gallery.com/sankey-diagram.html
-
-# Library - must have the pagkage networkD3
-library(networkD3)
-library(dplyr)
- 
-# A connection data frame is a list of flows with intensity for each flow
-links <- data.frame(
-  source=c("group_A","group_A", "group_B", "group_C", "group_C", "group_E"), 
-  target=c("group_C","group_D", "group_E", "group_F", "group_G", "group_H"), 
-  value=c(2,3, 2, 3, 1, 3)
-  )
- 
-# From these flows we need to create a node data frame: it lists every entities involved in the flow
-nodes <- data.frame(
-  name=c(as.character(links$source), 
-  as.character(links$target)) %>% unique()
-)
- 
-# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
-links$IDsource <- match(links$source, nodes$name)-1 
-links$IDtarget <- match(links$target, nodes$name)-1
- 
-# Make the Network
-p <- sankeyNetwork(Links = links, Nodes = nodes,
-              Source = "IDsource", Target = "IDtarget",
-              Value = "value", NodeID = "name", 
-              sinksRight=FALSE)
-p
-
-# save the widget
-# library(htmlwidgets)
-# saveWidget(p, file=paste0( getwd(), "/HtmlWidget/sankeyBasic1.html"))
+## Quick Start
 
 
 
-
-```
 
 ### Variations
 
