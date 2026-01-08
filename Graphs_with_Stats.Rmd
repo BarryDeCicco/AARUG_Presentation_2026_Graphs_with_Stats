@@ -68,6 +68,18 @@ ggstatsplot::ggscatterstats(data = mtcars, x = hp, y = mpg, title = 'ggscatterst
 
 ```
 
+### Other ggstatsplot functions:
+
+- ggbetweenstats, for comparisons between groups.
+- ggwithinstats, for looking at distributions by level of a single categorical variable.
+- gghistostats, for making a histogram and comparing if the mean is statistically significantly different from a specified value.
+- ggcorrmat(), for making and examining correlalograms.
+- ggpiestats, for making and testingp pie charts from contingency tables.
+- ggbarstats, same as ggpiestats, but with bar charts.
+- ggcoefstats, for dot-and-whisker plots, for regression coefficients and meta-analysis.
+
+
+
 
 
 
