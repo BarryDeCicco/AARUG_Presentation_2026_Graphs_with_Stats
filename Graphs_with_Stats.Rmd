@@ -54,11 +54,15 @@ There are nine functions, each for a specific statistical test.
 
 #### Example: Scatterplot  (ggscatterstats)
 
+This will create a scatterplot of the two variables, add marginal plots (histograms) 
+and then add one test for the correlation and for the equality of means between the two
+variables.
+
 
 ``` {r  ggscatterstats}
 
-library(ggscatterstats)
-ggstatsplot::ggscatterstats(data = mtcars, x = hp, y = mpg)
+
+ggstatsplot::ggscatterstats(data = mtcars, x = hp, y = mpg, title = 'ggscatterstats')
 
 ```
 
@@ -69,7 +73,6 @@ ggstatsplot::ggscatterstats(data = mtcars, x = hp, y = mpg)
 
 - ggside (https://cran.r-project.org/web/packages/ggpubr/index.html)
 - ggstatsplot (https://r-graph-gallery.com/package/ggstatsplot.html)
-
 - R Graph Gallery (https://r-graph-gallery.com/) 
 
   
